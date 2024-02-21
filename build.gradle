@@ -21,15 +21,44 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	springDocVersion = "2.3.0"
+	mapStructVersion = "1.5.5.Final"
+}
+
 dependencies {
+	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapStructVersion}"
+	annotationProcessor "org.projectlombok:lombok"
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+	compileOnly "org.projectlombok:lombok"
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	runtimeOnly 'com.h2database:h2'
+
+	implementation "org.mapstruct:mapstruct:${mapStructVersion}"
+	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'
-	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+	testAnnotationProcessor "org.projectlombok:lombok"
+
+	testCompileOnly "org.projectlombok:lombok"
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+compileJava {
+	options.compilerArgs += [
+			'-Amapstruct.defaultComponentModel=spring',
+			'-Amapstruct.defaultInjectionStrategy=constructor',
+			'-Amapstruct.unmappedSourcePolicy=IGNORE',
+			'-Amapstruct.unmappedTargetPolicy=IGNORE'
+	]
 }
