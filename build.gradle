@@ -24,10 +24,12 @@ repositories {
 ext {
 	springDocVersion = "2.3.0"
 	mapStructVersion = "1.5.5.Final"
+	mapStructBidingVersion = "0.2.0"
+	easyRandomVersion = "5.0.0"
 }
 
 dependencies {
-	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
+	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${mapStructBidingVersion}"
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapStructVersion}"
 	annotationProcessor "org.projectlombok:lombok"
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -42,11 +44,14 @@ dependencies {
 	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	testAnnotationProcessor "org.projectlombok:lombok"
 
 	testCompileOnly "org.projectlombok:lombok"
 
+	testImplementation 'org.assertj:assertj-core'
+	testImplementation "org.jeasy:easy-random-core:${easyRandomVersion}"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

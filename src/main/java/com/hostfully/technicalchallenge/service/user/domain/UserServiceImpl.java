@@ -3,6 +3,7 @@ package com.hostfully.technicalchallenge.service.user.domain;
 import com.hostfully.technicalchallenge.common.exception.NotFoundException;
 import com.hostfully.technicalchallenge.service.user.data.User;
 import com.hostfully.technicalchallenge.service.user.data.UserRepository;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto retrieveUser(final UUID userId) {
+    Objects.requireNonNull(userId, "`userId` cannot be null");
+
     final User retrieved = userRepository.findById(userId)
         .orElseThrow(() -> new NotFoundException(String.format("No user found with id %s", userId)));
 
@@ -26,6 +29,8 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto createUser(final UserDto userInfo) {
+    checkUserInfoIsNotNull(userInfo);
+
     final User toSave = userMapper.dtoToEntity(userInfo);
     final User saved = userRepository.save(toSave);
     return userMapper.entityToDto(saved);
@@ -33,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto updateUser(final UUID userId, final UserDto userInfo) {
+    Objects.requireNonNull(userId, "`userId` cannot be null");
+    checkUserInfoIsNotNull(userInfo);
+
     final User retrieved = userRepository.findById(userId)
         .orElseThrow(() -> new NotFoundException(String.format("No user found with id %s", userId)));
 
@@ -47,6 +55,14 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void deleteUser(final UUID userId) {
+    Objects.requireNonNull(userId, "`userId` cannot be null");
     userRepository.deleteById(userId);
+  }
+
+  private void checkUserInfoIsNotNull(final UserDto userInfo) {
+    Objects.requireNonNull(userInfo, "`userInfo` cannot be null");
+    Objects.requireNonNull(userInfo.getName(), "`userInfo.getName()` cannot be null");
+    Objects.requireNonNull(userInfo.getEmail(), "`userInfo.getEmail()` cannot be null");
+    Objects.requireNonNull(userInfo.getDateOfBirth(), "`userInfo.getDateOfBirth()` cannot be null");
   }
 }

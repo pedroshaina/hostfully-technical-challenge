@@ -9,9 +9,11 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.With;
 import org.hibernate.proxy.HibernateProxy;
 
 @Entity
@@ -19,6 +21,8 @@ import org.hibernate.proxy.HibernateProxy;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@With
 public class User {
 
   @Id
