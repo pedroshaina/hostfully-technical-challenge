@@ -1,6 +1,7 @@
 package com.hostfully.technicalchallenge.common.api;
 
 import com.hostfully.technicalchallenge.common.api.response.ApiErrorResponse;
+import com.hostfully.technicalchallenge.common.exception.DatesConflictException;
 import com.hostfully.technicalchallenge.common.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
@@ -84,6 +85,33 @@ public class ApiErrorHandler {
 
     return new ApiErrorResponse(
         HttpStatus.METHOD_NOT_ALLOWED.value(),
+        e.getMessage()
+    );
+  }
+
+  @ExceptionHandler(value = IllegalArgumentException.class)
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+  public ApiErrorResponse handleIllegalArgumentException(final IllegalArgumentException e) {
+    return new ApiErrorResponse(
+        HttpStatus.UNPROCESSABLE_ENTITY.value(),
+        e.getMessage()
+    );
+  }
+
+  @ExceptionHandler(value = IllegalStateException.class)
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+  public ApiErrorResponse handleIllegalStateException(final IllegalStateException e) {
+    return new ApiErrorResponse(
+        HttpStatus.UNPROCESSABLE_ENTITY.value(),
+        e.getMessage()
+    );
+  }
+
+  @ExceptionHandler(value = DatesConflictException.class)
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+  public ApiErrorResponse handleDatesConflictException(final DatesConflictException e) {
+    return new ApiErrorResponse(
+        HttpStatus.UNPROCESSABLE_ENTITY.value(),
         e.getMessage()
     );
   }
