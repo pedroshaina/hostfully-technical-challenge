@@ -76,6 +76,7 @@ public class BookingServiceImpl implements BookingService {
 
   @Override
   public BookingDto updateBooking(final UUID bookingId, final BookingDto bookingInfo) {
+    Objects.requireNonNull(bookingId, "`bookingId` cannot be null");
     checkBookingInfoIsNotNullOnUpdate(bookingInfo);
 
     if (bookingInfo.getGuests().isEmpty()) {
@@ -111,6 +112,8 @@ public class BookingServiceImpl implements BookingService {
 
   @Override
   public BookingDto cancelBooking(final UUID bookingId) {
+    Objects.requireNonNull(bookingId, "`bookingId` cannot be null");
+
     final Booking retrievedBooking = bookingRepository.findById(bookingId)
         .orElseThrow(() -> new NotFoundException(String.format("No booking found with id %s", bookingId)));
 
@@ -127,6 +130,8 @@ public class BookingServiceImpl implements BookingService {
 
   @Override
   public BookingDto rebookCanceledBooking(final UUID bookingId) {
+    Objects.requireNonNull(bookingId, "`bookingId` cannot be null");
+
     final Booking retrievedBooking = bookingRepository.findById(bookingId)
         .orElseThrow(() -> new NotFoundException(String.format("No booking found with id %s", bookingId)));
 
@@ -148,6 +153,8 @@ public class BookingServiceImpl implements BookingService {
 
   @Override
   public void deleteBooking(final UUID bookingId) {
+    Objects.requireNonNull(bookingId, "`bookingId` cannot be null");
+
     bookingGuestRepository.deleteByBookingId(bookingId);
     bookingRepository.deleteById(bookingId);
   }
