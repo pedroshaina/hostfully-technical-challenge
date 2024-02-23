@@ -72,7 +72,7 @@ public interface PropertyApi {
       responseCode = "204",
       description = "The dates were blocked"
   )
-  @PutMapping(value = "/{id}/blocks")
+  @PostMapping(value = "/{id}/block")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   void blockPropertyDates(
       @PathVariable("id") final UUID propertyId,
@@ -83,7 +83,7 @@ public interface PropertyApi {
       responseCode = "204",
       description = "The dates were unblocked"
   )
-  @DeleteMapping(value = "/{id}/blocks")
+  @PostMapping(value = "/{id}/unblock")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   void unblockPropertyDates(
       @PathVariable("id") final UUID propertyId,
