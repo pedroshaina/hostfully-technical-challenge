@@ -4,6 +4,7 @@ import com.hostfully.technicalchallenge.common.api.response.ApiErrorResponse;
 import com.hostfully.technicalchallenge.common.exception.DatesConflictException;
 import com.hostfully.technicalchallenge.common.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Objects;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -110,9 +111,19 @@ public class ApiErrorHandler {
   @ExceptionHandler(value = DatesConflictException.class)
   @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
   public ApiErrorResponse handleDatesConflictException(final DatesConflictException e) {
+    final StringBuilder builder = new StringBuilder();
+
+    builder.append(e.getMessage());
+
+    if (Objects.nonNull(e.getUnavailableDates()) && !e.getUnavailableDates().isEmpty()) {
+      builder.append(String.format(". The unavailable dates are: %s", e.getUnavailableDates()));
+    }
+
+    final String message = builder.toString();
+
     return new ApiErrorResponse(
         HttpStatus.UNPROCESSABLE_ENTITY.value(),
-        e.getMessage()
+        message
     );
   }
 

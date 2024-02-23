@@ -2,6 +2,7 @@ package com.hostfully.technicalchallenge.service.booking.domain;
 
 import com.hostfully.technicalchallenge.service.booking.api.request.CreateBookingRequest;
 import com.hostfully.technicalchallenge.service.booking.api.request.UpdateBookingRequest;
+import com.hostfully.technicalchallenge.service.booking.api.request.UpsertBookingGuestRequest;
 import com.hostfully.technicalchallenge.service.booking.api.response.BookingGuestResponse;
 import com.hostfully.technicalchallenge.service.booking.api.response.BookingResponse;
 import com.hostfully.technicalchallenge.service.booking.data.Booking;
@@ -20,5 +21,6 @@ public interface BookingMapper {
   Booking dtoToEntity(final BookingDto dto);
 
   BookingGuestDto entityToDto(final BookingGuest entity);
+  BookingGuestDto upsertRequestToDto(final UpsertBookingGuestRequest upsertRequest);
   BookingGuestResponse dtoToResponse(final BookingGuestDto dto);
 }

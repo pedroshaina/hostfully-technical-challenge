@@ -26,7 +26,6 @@ import com.hostfully.technicalchallenge.service.property.domain.PropertyDto;
 import com.hostfully.technicalchallenge.service.property.domain.PropertyMapper;
 import com.hostfully.technicalchallenge.service.property.domain.PropertyMapperImpl;
 import com.hostfully.technicalchallenge.service.property.domain.PropertyService;
-import com.hostfully.technicalchallenge.service.user.api.UserApi;
 import com.hostfully.technicalchallenge.util.RandomEntityGenerator;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -66,16 +65,16 @@ class PropertyApiTest {
 
   @Test
   @SneakyThrows
-  void shouldReturn400IfPropertyDoesntExistWhenGetPropertyById() {
+  void shouldReturn404IfPropertyDoesntExistWhenGetPropertyById() {
     final UUID propertyId = UUID.randomUUID();
 
     doThrow(new NotFoundException(String.format("No property found with id %s", propertyId)))
         .when(propertyService).retrieveProperty(any(UUID.class));
 
     mockMvc
-        .perform(get(PropertyApi.PROPERTY_API_PATH + "/{id}", "invalid-uuid"))
+        .perform(get(PropertyApi.PROPERTY_API_PATH + "/{id}", propertyId))
         .andDo(print())
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isNotFound());
   }
 
   @Test
@@ -299,8 +298,9 @@ class PropertyApiTest {
 
     }).when(propertyService).createProperty(any(PropertyDto.class));
 
-    final PropertyDto expectedResponse = propertyMapper.upsertRequestToDto(request)
-        .withId(propertyId);
+    final PropertyResponse expectedResponse =
+        propertyMapper.dtoToResponse(
+            propertyMapper.upsertRequestToDto(request).withId(propertyId));
 
     mockMvc
         .perform(

@@ -23,5 +23,5 @@ public class CreateBookingRequest {
   private LocalDate endDate;
   @NotNull
   @Valid
-  private List<@NotNull UpsertBookingGuestsRequest> guests;
+  private List<@NotNull UpsertBookingGuestRequest> guests;
 }

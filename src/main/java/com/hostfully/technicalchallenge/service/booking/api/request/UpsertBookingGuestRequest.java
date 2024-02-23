@@ -10,7 +10,7 @@ import lombok.With;
 @Data
 @AllArgsConstructor
 @With
-public class UpsertBookingGuestsRequest {
+public class UpsertBookingGuestRequest {
   @NotBlank
   private String name;
   @NotNull
