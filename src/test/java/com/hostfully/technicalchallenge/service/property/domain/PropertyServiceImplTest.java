@@ -20,16 +20,13 @@ import com.hostfully.technicalchallenge.service.property.data.block.PropertyBloc
 import com.hostfully.technicalchallenge.service.user.data.User;
 import com.hostfully.technicalchallenge.service.user.data.UserRepository;
 import com.hostfully.technicalchallenge.util.RandomEntityGenerator;
-import java.awt.print.Book;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import javax.swing.text.html.Option;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.AdditionalAnswers;

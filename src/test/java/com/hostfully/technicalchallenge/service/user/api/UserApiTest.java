@@ -31,9 +31,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers = {UserController.class})
+
 @Import({UserMapperImpl.class})
-public class UserApiTest {
+@WebMvcTest(controllers = {UserController.class})
+class UserApiTest {
 
   @Autowired
   private MockMvc mockMvc;
