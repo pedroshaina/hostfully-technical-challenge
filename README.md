@@ -31,7 +31,7 @@ docker run hostfully/technical-challenge:1.0
 ```
 **Note: If you're using a Apple Silicon processor (M1, M2 or M3 and any variants), you might need to add the following parameter `--platform=linux/amd64` to the docker commands above**
 
-After the project is up and running, you can hit https://localhost:8080/ and you will be redirected to the Swagger UI with the API Portal.
+After the project is up and running, you can hit http://localhost:8080/ and you will be redirected to the Swagger UI with the API Portal.
 
 ## Project structure & architecture
 The project follows a very simple architecture inspired by DDD.
