@@ -143,7 +143,9 @@ class BookingServiceImplTest {
 
   @Test
   void shouldThrowNotFoundExceptionIfUserDoesntExistWhenCreateBooking() {
-    final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class);
+    final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class)
+        .withStartDate(LocalDate.now())
+        .withEndDate(LocalDate.now().plusDays(1L));;
 
     doReturn(Optional.empty()).when(userRepository).findById(any(UUID.class));
 
@@ -153,7 +155,9 @@ class BookingServiceImplTest {
 
   @Test
   void shouldThrowNotFoundExceptionIfPropertyDoesntExistWhenCreateBooking() {
-    final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class);
+    final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class)
+        .withStartDate(LocalDate.now())
+        .withEndDate(LocalDate.now().plusDays(1L));;
 
     final User user = RandomEntityGenerator.create(User.class);
 
@@ -167,7 +171,7 @@ class BookingServiceImplTest {
   @Test
   void shouldThrowDatesConflictExceptionIfDatesAreUnavailableWhenCreateBooking() {
     final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class)
-        .withStartDate(LocalDate.now().minusDays(1L))
+        .withStartDate(LocalDate.now())
         .withEndDate(LocalDate.now().plusDays(1L));
 
     final User user = RandomEntityGenerator.create(User.class);
@@ -200,7 +204,7 @@ class BookingServiceImplTest {
     final BookingGuestDto bookingGuest = RandomEntityGenerator.create(BookingGuestDto.class);
 
     final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class)
-        .withStartDate(LocalDate.now().minusDays(1L))
+        .withStartDate(LocalDate.now())
         .withEndDate(LocalDate.now().plusDays(1L))
         .withGuests(List.of(bookingGuest));
 
@@ -232,7 +236,7 @@ class BookingServiceImplTest {
     final BookingDto saved = bookingService.createBooking(bookingInfo);
     final BookingDto expected = bookingInfo.withId(bookingId)
         .withStatus(BookingStatus.BOOKED)
-        .withTotalPrice(30000L)
+        .withTotalPrice(20000L)
         .withGuests(List.of(bookingGuest.withBookingId(bookingId)));
 
     assertThat(saved).isEqualTo(expected);
@@ -302,7 +306,9 @@ class BookingServiceImplTest {
   void shouldThrowNotFoundExceptionIfBookingDoesntExistWhenUpdateBooking() {
     final UUID bookingId = UUID.randomUUID();
 
-    final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class);
+    final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class)
+        .withStartDate(LocalDate.now())
+        .withEndDate(LocalDate.now().plusDays(1L));;
 
     doReturn(Optional.empty()).when(bookingRepository).findById(any(UUID.class));
 
@@ -314,10 +320,14 @@ class BookingServiceImplTest {
   void shouldThrowIllegalStateExceptionIfBookingIsCanceledWhenUpdateBooking() {
     final UUID bookingId = UUID.randomUUID();
 
-    final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class);
+    final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class)
+        .withStartDate(LocalDate.now())
+        .withEndDate(LocalDate.now().plusDays(1L));;
 
     final Booking retrievedBooking = RandomEntityGenerator.create(Booking.class)
-            .withStatus(BookingStatus.CANCELED);
+        .withStatus(BookingStatus.CANCELED)
+        .withStartDate(LocalDate.now())
+        .withEndDate(LocalDate.now().plusDays(1L));
 
     doReturn(Optional.of(retrievedBooking)).when(bookingRepository).findById(any(UUID.class));
 
@@ -329,10 +339,14 @@ class BookingServiceImplTest {
   void shouldThrowEntityNotFoundExceptionIfPropertyDoesntExistWhenUpdateBooking() {
     final UUID bookingId = UUID.randomUUID();
 
-    final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class);
+    final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class)
+        .withStartDate(LocalDate.now())
+        .withEndDate(LocalDate.now().plusDays(1L));;
 
     final Booking retrievedBooking = RandomEntityGenerator.create(Booking.class)
-        .withStatus(BookingStatus.BOOKED);
+        .withStatus(BookingStatus.BOOKED)
+        .withStartDate(LocalDate.now())
+        .withEndDate(LocalDate.now().plusDays(1L));
 
     doReturn(Optional.of(retrievedBooking)).when(bookingRepository).findById(any(UUID.class));
     doReturn(Optional.empty()).when(propertyRepository).findById(any(UUID.class));
@@ -345,10 +359,14 @@ class BookingServiceImplTest {
   void shouldThrowDatesConflictExceptionIfDatesAreUnavailableWhenUpdateBooking() {
     final UUID bookingId = UUID.randomUUID();
 
-    final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class);
+    final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class)
+        .withStartDate(LocalDate.now())
+        .withEndDate(LocalDate.now().plusDays(1L));;
 
     final Booking retrievedBooking = RandomEntityGenerator.create(Booking.class)
-        .withStatus(BookingStatus.BOOKED);
+        .withStatus(BookingStatus.BOOKED)
+        .withStartDate(LocalDate.now().minusDays(1L))
+        .withEndDate(LocalDate.now().plusDays(1L));
 
     final Property retrievedProperty = RandomEntityGenerator.create(Property.class)
         .withPricePerGuest(10000L);
@@ -381,7 +399,7 @@ class BookingServiceImplTest {
     final BookingGuestDto bookingGuest = RandomEntityGenerator.create(BookingGuestDto.class);
 
     final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class)
-        .withStartDate(LocalDate.now().minusDays(1L))
+        .withStartDate(LocalDate.now())
         .withEndDate(LocalDate.now().plusDays(1L))
         .withGuests(List.of(bookingGuest));
 
@@ -495,7 +513,9 @@ class BookingServiceImplTest {
     final UUID bookingId = UUID.randomUUID();
 
     final Booking retrievedBooking = RandomEntityGenerator.create(Booking.class)
-        .withStatus(BookingStatus.CANCELED);
+        .withStatus(BookingStatus.CANCELED)
+        .withStartDate(LocalDate.now())
+        .withEndDate(LocalDate.now().plusDays(1L));
 
     doReturn(Optional.of(retrievedBooking)).when(bookingRepository).findById(any(UUID.class));
 
@@ -525,7 +545,9 @@ class BookingServiceImplTest {
     final UUID bookingId = UUID.randomUUID();
 
     final Booking retrievedBooking = RandomEntityGenerator.create(Booking.class)
-        .withStatus(BookingStatus.CANCELED);
+        .withStatus(BookingStatus.CANCELED)
+        .withStartDate(LocalDate.now())
+        .withEndDate(LocalDate.now().plusDays(1L));;
 
     doReturn(Optional.of(retrievedBooking)).when(bookingRepository).findById(any(UUID.class));
 
