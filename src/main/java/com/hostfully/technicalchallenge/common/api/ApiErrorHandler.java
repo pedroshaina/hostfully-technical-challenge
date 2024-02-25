@@ -4,6 +4,7 @@ import com.hostfully.technicalchallenge.common.api.response.ApiErrorResponse;
 import com.hostfully.technicalchallenge.common.exception.DatesConflictException;
 import com.hostfully.technicalchallenge.common.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Collections;
 import java.util.Objects;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -116,6 +117,7 @@ public class ApiErrorHandler {
     builder.append(e.getMessage());
 
     if (Objects.nonNull(e.getUnavailableDates()) && !e.getUnavailableDates().isEmpty()) {
+      Collections.sort(e.getUnavailableDates());
       builder.append(String.format(". The unavailable dates are: %s", e.getUnavailableDates()));
     }
 

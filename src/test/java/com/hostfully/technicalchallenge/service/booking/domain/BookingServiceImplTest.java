@@ -185,6 +185,15 @@ class BookingServiceImplTest {
   }
 
   @Test
+  void shouldThrowIllegalArgumentExceptionIfStartDateIsInThePastWhenCreateBooking() {
+    final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class)
+        .withStartDate(LocalDate.now().minusDays(1L));
+
+    assertThatThrownBy(() -> bookingService.createBooking(bookingInfo))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
   void shouldCreateBookingAndGuests() {
     final UUID bookingId = UUID.randomUUID();
 
@@ -355,6 +364,17 @@ class BookingServiceImplTest {
   }
 
   @Test
+  void shouldThrowIllegalArgumentExceptionIfStartDateIsInThePastWhenUpdateBooking() {
+    final UUID bookingId = UUID.randomUUID();
+
+    final BookingDto bookingInfo = RandomEntityGenerator.create(BookingDto.class)
+        .withStartDate(LocalDate.now().minusDays(1L));
+
+    assertThatThrownBy(() -> bookingService.updateBooking(bookingId, bookingInfo))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
   void shouldUpdateBookingDatesAndGuests() {
     final UUID bookingId = UUID.randomUUID();
 
@@ -484,6 +504,20 @@ class BookingServiceImplTest {
 
     assertThatThrownBy(() -> bookingService.rebookCanceledBooking(bookingId))
         .isInstanceOf(DatesConflictException.class);
+  }
+
+  @Test
+  void shouldThrowIllegalArgumentExceptionIfStartDateIsInThePastWhenRebookCanceledBooking() {
+    final UUID bookingId = UUID.randomUUID();
+
+    final Booking retrievedBooking = RandomEntityGenerator.create(Booking.class)
+        .withStatus(BookingStatus.CANCELED)
+        .withStartDate(LocalDate.now().minusDays(1L));
+
+    doReturn(Optional.of(retrievedBooking)).when(bookingRepository).findById(any(UUID.class));
+
+    assertThatThrownBy(() -> bookingService.rebookCanceledBooking(bookingId))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test

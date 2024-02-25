@@ -50,6 +50,10 @@ public class BookingServiceImpl implements BookingService {
       throw new IllegalArgumentException("Cannot create booking without guests information");
     }
 
+    if (bookingInfo.getStartDate().isBefore(LocalDate.now())) {
+      throw new IllegalArgumentException("Booking start date cannot be in the past");
+    }
+
     userRepository.findById(bookingInfo.getUserId())
         .orElseThrow(() -> new NotFoundException(String.format("No user found with provided userId %s", bookingInfo.getUserId())));
 
@@ -81,6 +85,10 @@ public class BookingServiceImpl implements BookingService {
 
     if (bookingInfo.getGuests().isEmpty()) {
       throw new IllegalArgumentException("Cannot update booking without guests information");
+    }
+
+    if (bookingInfo.getStartDate().isBefore(LocalDate.now())) {
+      throw new IllegalArgumentException("Booking start date cannot be in the past");
     }
 
     final Booking retrievedBooking = bookingRepository.findById(bookingId)
@@ -137,6 +145,10 @@ public class BookingServiceImpl implements BookingService {
 
     if (retrievedBooking.getStatus() != BookingStatus.CANCELED) {
       throw new IllegalStateException("Can only rebook a canceled booking");
+    }
+
+    if (retrievedBooking.getStartDate().isBefore(LocalDate.now())) {
+      throw new IllegalArgumentException("Booking start date cannot be in the past");
     }
 
     checkDatesAvailability(
